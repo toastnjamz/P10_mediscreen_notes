@@ -1,9 +1,9 @@
 package com.mediscreen.notes.controller;
 
-import com.mediscreen.notes.domain.Note;
-import com.mediscreen.notes.domain.Patient;
-import com.mediscreen.notes.service.NoteService;
-import com.mediscreen.notes.service.PatientService;
+import com.mediscreen.notes.domain.note.Note;
+import com.mediscreen.notes.domain.patient.Patient;
+import com.mediscreen.notes.service.note.NoteService;
+import com.mediscreen.notes.service.patient.PatientService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;

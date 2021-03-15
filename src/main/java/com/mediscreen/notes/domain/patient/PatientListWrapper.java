@@ -1,4 +1,4 @@
-package com.mediscreen.notes.domain;
+package com.mediscreen.notes.domain.patient;
 
 import java.util.List;
 

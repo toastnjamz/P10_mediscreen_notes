@@ -1,7 +1,7 @@
-package com.mediscreen.notes.service;
+package com.mediscreen.notes.service.patient;
 
-import com.mediscreen.notes.domain.Patient;
-import com.mediscreen.notes.domain.PatientListWrapper;
+import com.mediscreen.notes.domain.patient.Patient;
+import com.mediscreen.notes.domain.patient.PatientListWrapper;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 

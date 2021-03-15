@@ -1,6 +1,6 @@
-package com.mediscreen.notes.service;
+package com.mediscreen.notes.service.note;
 
-import com.mediscreen.notes.domain.Note;
+import com.mediscreen.notes.domain.note.Note;
 import com.mediscreen.notes.repository.NoteRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
