@@ -8,7 +8,7 @@ import java.util.Objects;
 
 import javax.validation.constraints.NotEmpty;
 
-@Document(collection = "notes")
+@Document(collection = "note")
 public class Note {
 
     @Id
@@ -18,7 +18,7 @@ public class Note {
     @NotEmpty(message="Note field is mandatory.")
     private String note;
 
-    @Field("patient_id")
+    @Field("patientId")
     private Integer patientId;
 
     public String getId() {

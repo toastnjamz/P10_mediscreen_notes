@@ -8,9 +8,9 @@
 </head>
 <body>
 <div class="container" style=" margin-left: 30px;">
-    <div class="row"><h2>Note List</h2></div>
+    <div class="row"><h2>Patient's Note List</h2></div>
     <div class="row">
-        <a href="@{'/note/add/' + ${notePatientId}}" class="btn btn-primary btn-sm">Add New</a>
+        <a href="@{'/note/add/' + ${patientId}}" class="btn btn-primary btn-sm">Add New Note</a>
         <table class="table table-bordered">
             <thead>
             <tr>
@@ -22,10 +22,10 @@
             <tbody>
             <tr th:each="note : ${noteList}">
                 <td style="width: 10%" th:text="${note.id}"></td>
-                <td style="word-beak: break-all;" th:text="${note.note}"></td>
+                <td style="word-break: break-all;" th:text="${note.note}"></td>
                 <td style="width: 50px" class="text-center">
-                    <a th:href="@{/note/delete/{id}(id=${note.id})}">Delete Note</a>&nbsp;|&nbsp;
-                    <a th:href="@{/note/update/{id}(id=${note.id})}">Update Note</a>
+                    <a th:href="@{/note/delete/{id}(id=${note.id})}">Delete</a>&nbsp;|&nbsp;
+                    <a th:href="@{/note/update/{id}(id=${note.id})}">Update</a>
                 </td>
             </tr>
             </tbody>
