@@ -1,6 +1,7 @@
 package com.mediscreen.notes.controller;
 
 import com.mediscreen.notes.domain.note.Note;
+import com.mediscreen.notes.domain.note.NoteListWrapper;
 import com.mediscreen.notes.domain.patient.Patient;
 import com.mediscreen.notes.service.note.NoteService;
 import com.mediscreen.notes.service.patient.PatientService;
@@ -13,7 +14,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.validation.Valid;
-import java.util.List;
 
 @RestController
 public class NoteController {
@@ -26,11 +26,16 @@ public class NoteController {
 
     private static final Logger log = LoggerFactory.getLogger(NoteController.class);
 
-    //TODO: Delete test method
-    @GetMapping("/getAllNotes/{patientId}")
-    public List<Note> getAllNotes(@PathVariable("patientId") Integer patientId) {
-        log.info("GET request received for getAllNotes()");
-        return noteService.findAllNotesByPatientId(patientId);
+    /**
+     * HTTP GET request for external microservices
+     * @return wrapper class with list of all notes for a specified patient Id
+     */
+    @GetMapping(value = "/noteList/{patientId}")
+    public NoteListWrapper getNoteList(@PathVariable("patientId") Integer patientId) {
+        NoteListWrapper noteListWrapper = new NoteListWrapper();
+        log.info("GET request received for getNoteList()");
+        noteListWrapper.setNoteList(noteService.findAllNotesByPatientId(patientId));
+        return noteListWrapper;
     }
 
     /**
@@ -66,8 +71,8 @@ public class NoteController {
             Note note = new Note();
             note.setPatientId(patientId);
             model.addAttribute("note", note);
-//            mav.addObject("patientId", patientId);
-            mav.setViewName("note/add/{patientId}");
+//            model.addAttribute("patientId", patientId);
+            mav.setViewName("note/add");
         }
         log.info("GET request received for addNote()");
         return mav;
@@ -90,12 +95,13 @@ public class NoteController {
             if (!result.hasErrors()) {
                 noteService.createNote(note);
                 model.addAttribute("noteList", noteService.findAllNotesByPatientId(patientId));
+                mav.addObject("patientId", patientId);
                 mav.setViewName("redirect:/note/list/{patientId}");
                 log.info("Add Note " + note.toString());
                 return mav;
             }
         }
-        mav.setViewName("note/add/{patientId}");
+        mav.setViewName("note/add");
         return mav;
     }
 
