@@ -18,13 +18,14 @@ import javax.validation.Valid;
 @RestController
 public class NoteController {
 
-    @Autowired
     private NoteService noteService;
-
-    @Autowired
-    PatientService patientService;
-
+    private PatientService patientService;
     private static final Logger log = LoggerFactory.getLogger(NoteController.class);
+
+    public NoteController(@Autowired NoteService noteService, @Autowired PatientService patientService) {
+        this.noteService = noteService;
+        this.patientService = patientService;
+    }
 
     /**
      * HTTP GET request for external microservices

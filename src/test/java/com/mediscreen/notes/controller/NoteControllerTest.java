@@ -7,6 +7,7 @@ import com.mediscreen.notes.service.patient.PatientService;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
+import org.mockito.InjectMocks;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -15,6 +16,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
+import static org.mockito.ArgumentMatchers.anyInt;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 import static org.mockito.Mockito.when;
@@ -28,7 +30,6 @@ import java.util.List;
 @SpringBootTest
 public class NoteControllerTest {
 
-    @Autowired
     private MockMvc mockMvc;
 
     @Autowired
@@ -39,6 +40,9 @@ public class NoteControllerTest {
 
     @MockBean
     private PatientService patientServiceMock;
+
+    @InjectMocks
+    private NoteServiceImpl noteService;
 
     private Note note;
     private Patient patient;
@@ -64,11 +68,13 @@ public class NoteControllerTest {
 
     @Test
     public void showAllNotesByPatientId_statusIsSuccessful() throws Exception {
+//        List<Patient> patientList = new ArrayList<>();
+//        patientList.add(patient);
 
         List<Note> noteList = new ArrayList<>();
         noteList.add(note);
 
-        when(patientServiceMock.findPatientInList(100)).thenReturn(patient);
+        when(patientServiceMock.findPatientInList(anyInt())).thenReturn(patient);
         when(noteServiceMock.findAllNotesByPatientId(100)).thenReturn(noteList);
 
 //        mockMvc.perform(get("/note/list/{patientId}", "100"))
