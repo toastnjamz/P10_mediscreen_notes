@@ -3,7 +3,7 @@ package com.mediscreen.notes.controller;
 import com.mediscreen.notes.domain.note.Note;
 import com.mediscreen.notes.domain.patient.Patient;
 import com.mediscreen.notes.service.note.NoteServiceImpl;
-import com.mediscreen.notes.service.patient.PatientService;
+import com.mediscreen.notes.service.patient.PatientServiceClient;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
@@ -39,10 +39,7 @@ public class NoteControllerTest {
     private NoteServiceImpl noteServiceMock;
 
     @MockBean
-    private PatientService patientServiceMock;
-
-    @InjectMocks
-    private NoteServiceImpl noteService;
+    private PatientServiceClient patientServiceClientMock;
 
     private Note note;
     private Patient patient;
@@ -53,37 +50,72 @@ public class NoteControllerTest {
         mockMvc = MockMvcBuilders.webAppContextSetup(webContext).build();
 
         LocalDate dob = LocalDate.of(Integer.parseInt("1999"), Integer.parseInt("01"), Integer.parseInt("01"));
-        Patient patient = new Patient();
+        patient = new Patient();
         patient.setId(100);
         patient.setGivenName("TestGiven");
         patient.setFamilyName("TestFamily");
         patient.setDob(dob);
         patient.setSex('F');
 
-        Note note = new Note();
+        note = new Note();
         note.setId("123");
         note.setNote("Test note");
         note.setPatientId(100);
     }
 
     @Test
+    public void getNoteList_statusIsSuccessful() throws Exception {
+        mockMvc.perform(get("/noteList/" + 100))
+                .andExpect(status().is2xxSuccessful());
+    }
+
+    @Test
     public void showAllNotesByPatientId_statusIsSuccessful() throws Exception {
-//        List<Patient> patientList = new ArrayList<>();
-//        patientList.add(patient);
+        List<Patient> patientList = new ArrayList<>();
+        patientList.add(patient);
 
         List<Note> noteList = new ArrayList<>();
         noteList.add(note);
 
-        when(patientServiceMock.findPatientInList(anyInt())).thenReturn(patient);
-        when(noteServiceMock.findAllNotesByPatientId(100)).thenReturn(noteList);
+//        when(patientServiceClientMock.findPatientInList(anyInt())).thenReturn(patient);
+//        when(noteServiceMock.findAllNotesByPatientId(100)).thenReturn(noteList);
 
-//        mockMvc.perform(get("/note/list/{patientId}", "100"))
-        mockMvc.perform(get("/note/list/" + 100))
-//                .param("patientId", "100"))
+//        mockMvc.perform(get("/note/list/" + 100))
+        mockMvc.perform(get("/note/list/{patientId}","100"))
                 .andExpect(status().is2xxSuccessful());
 //                .andExpect(view().name("note/list"));
 
     }
 
+    @Test
+    public void addNote_statusIsSuccessful() throws Exception {
+        mockMvc.perform(get("/note/add/" + 100))
+                .andExpect(status().is2xxSuccessful());
+
+    }
+
+    @Test
+    public void validate_statusIsSuccessful() throws Exception {
+
+
+    }
+
+    @Test
+    public void showUpdateForm_statusIsSuccessful() throws Exception {
+
+
+    }
+
+    @Test
+    public void updateNote_statusIsSuccessful() throws Exception {
+
+
+    }
+
+    @Test
+    public void deleteNote_statusIsSuccessful() throws Exception {
+
+
+    }
 
 }

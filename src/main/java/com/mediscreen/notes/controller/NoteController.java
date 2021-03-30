@@ -4,7 +4,7 @@ import com.mediscreen.notes.domain.note.Note;
 import com.mediscreen.notes.domain.note.NoteListWrapper;
 import com.mediscreen.notes.domain.patient.Patient;
 import com.mediscreen.notes.service.note.NoteService;
-import com.mediscreen.notes.service.patient.PatientService;
+import com.mediscreen.notes.service.patient.PatientServiceClient;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,12 +19,12 @@ import javax.validation.Valid;
 public class NoteController {
 
     private NoteService noteService;
-    private PatientService patientService;
+    private PatientServiceClient patientServiceClient;
     private static final Logger log = LoggerFactory.getLogger(NoteController.class);
 
-    public NoteController(@Autowired NoteService noteService, @Autowired PatientService patientService) {
+    public NoteController(@Autowired NoteService noteService, @Autowired PatientServiceClient patientServiceClient) {
         this.noteService = noteService;
-        this.patientService = patientService;
+        this.patientServiceClient = patientServiceClient;
     }
 
     /**
@@ -48,7 +48,7 @@ public class NoteController {
     @GetMapping("/note/list/{patientId}")
     public ModelAndView showAllNotesByPatientId(@PathVariable("patientId") Integer patientId, Model model) {
         ModelAndView mav = new ModelAndView();
-        Patient patient = patientService.findPatientInList(patientId);
+        Patient patient = patientServiceClient.findPatientInList(patientId);
         if (patient != null) {
             model.addAttribute("noteList", noteService.findAllNotesByPatientId(patientId));
             model.addAttribute("patientId", patientId);
@@ -67,7 +67,7 @@ public class NoteController {
     @GetMapping("/note/add/{patientId}")
     public ModelAndView addNote(@PathVariable("patientId") int patientId, Model model) {
         ModelAndView mav = new ModelAndView();
-        Patient patient = patientService.findPatientInList(patientId);
+        Patient patient = patientServiceClient.findPatientInList(patientId);
         if (patient != null) {
             Note note = new Note();
             note.setPatientId(patientId);
@@ -91,7 +91,7 @@ public class NoteController {
     public ModelAndView validate(@PathVariable("patientId") int patientId, @Valid Note note, BindingResult result,
                                  Model model) {
         ModelAndView mav = new ModelAndView();
-        Patient patient = patientService.findPatientInList(patientId);
+        Patient patient = patientServiceClient.findPatientInList(patientId);
         if (patient != null) {
             if (!result.hasErrors()) {
                 noteService.createNote(note);
@@ -171,6 +171,16 @@ public class NoteController {
             return mav;
         }
         return mav;
+    }
+
+    /**
+     * HTTP GET request to delete all notes for testing purposes
+     * @return void
+     */
+    @GetMapping("/note/deleteAllNotes")
+    public void deleteAllNotes() {
+        noteService.deleteAllNotes();
+        log.info("GET request received for deleteAllNotes()");
     }
 
 }

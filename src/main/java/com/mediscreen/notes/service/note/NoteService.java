@@ -16,4 +16,6 @@ public interface NoteService {
 
     public void deleteNote(String noteId);
 
+    public void deleteAllNotes();
+
 }

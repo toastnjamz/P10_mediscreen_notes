@@ -8,13 +8,13 @@ import org.springframework.web.client.RestTemplate;
 import java.util.List;
 
 @Service
-public class PatientService {
+public class PatientServiceClient {
 
     private final RestTemplate restTemplate;
 
     private final String requestURI = "http://localhost:8081//patientsList";
 
-    public PatientService(RestTemplate restTemplate) {
+    public PatientServiceClient(RestTemplate restTemplate) {
         this.restTemplate = restTemplate;
     }
 

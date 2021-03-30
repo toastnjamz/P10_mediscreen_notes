@@ -76,4 +76,9 @@ public class NoteServiceImpl implements NoteService {
         }
     }
 
+    @Override
+    public void deleteAllNotes() {
+        noteRepository.deleteAll();
+    }
+
 }

@@ -1,7 +1,7 @@
 //package com.mediscreen.notes.service;
 //
 //import com.mediscreen.notes.domain.patient.Patient;
-//import com.mediscreen.notes.service.patient.PatientService;
+//import com.mediscreen.notes.service.patient.PatientServiceClient;
 //import org.junit.jupiter.api.BeforeAll;
 //import org.junit.jupiter.api.Test;
 //import org.junit.jupiter.api.TestInstance;
@@ -19,7 +19,7 @@
 //public class PatientServiceTest {
 //
 //    private RestTemplate restTemplate;
-//    private PatientService patientService;
+//    private PatientServiceClient patientService;
 //    private Patient patient;
 //
 //    @BeforeAll
