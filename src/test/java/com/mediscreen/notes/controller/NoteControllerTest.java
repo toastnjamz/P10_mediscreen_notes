@@ -7,7 +7,6 @@ import com.mediscreen.notes.service.patient.PatientServiceClient;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
-import org.mockito.InjectMocks;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -16,7 +15,6 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
-import static org.mockito.ArgumentMatchers.anyInt;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 import static org.mockito.Mockito.when;
@@ -73,49 +71,61 @@ public class NoteControllerTest {
     public void showAllNotesByPatientId_statusIsSuccessful() throws Exception {
         List<Patient> patientList = new ArrayList<>();
         patientList.add(patient);
-
         List<Note> noteList = new ArrayList<>();
         noteList.add(note);
 
-//        when(patientServiceClientMock.findPatientInList(anyInt())).thenReturn(patient);
-//        when(noteServiceMock.findAllNotesByPatientId(100)).thenReturn(noteList);
+        when(patientServiceClientMock.findPatientInList(100)).thenReturn(patient);
 
-//        mockMvc.perform(get("/note/list/" + 100))
         mockMvc.perform(get("/note/list/{patientId}","100"))
                 .andExpect(status().is2xxSuccessful());
-//                .andExpect(view().name("note/list"));
 
     }
 
     @Test
     public void addNote_statusIsSuccessful() throws Exception {
-        mockMvc.perform(get("/note/add/" + 100))
-                .andExpect(status().is2xxSuccessful());
+        when(patientServiceClientMock.findPatientInList(100)).thenReturn(patient);
 
+        mockMvc.perform(get("/note/add/{patientId}", "100"))
+                .andExpect(status().is2xxSuccessful());
     }
 
     @Test
     public void validate_statusIsSuccessful() throws Exception {
-
-
+        mockMvc.perform(post("/note/validate/{patientId}", "100")
+                .param("note", "Test note"))
+                .andExpect(status().is2xxSuccessful());
     }
 
     @Test
     public void showUpdateForm_statusIsSuccessful() throws Exception {
+        when(patientServiceClientMock.findPatientInList(100)).thenReturn(patient);
+        when(noteServiceMock.findById("123")).thenReturn(note);
 
-
+        mockMvc.perform(get("/note/update/{id}", "123"))
+                .andExpect(status().is2xxSuccessful());
     }
 
     @Test
     public void updateNote_statusIsSuccessful() throws Exception {
+        List<Note> noteList = new ArrayList<>();
+        noteList.add(note);
 
+        when(patientServiceClientMock.findPatientInList(100)).thenReturn(patient);
+        when(noteServiceMock.findAllNotesByPatientId(100)).thenReturn(noteList);
+        when(noteServiceMock.findById("123")).thenReturn(note);
 
+        mockMvc.perform(post("/note/update/{id}", "123"))
+//                .param("note", "Updated note"))
+                .andExpect(status().is2xxSuccessful());
     }
 
     @Test
-    public void deleteNote_statusIsSuccessful() throws Exception {
+    public void deleteNote_statusIsRedirection() throws Exception {
+        when(patientServiceClientMock.findPatientInList(101)).thenReturn(patient);
+        when(noteServiceMock.findById("456")).thenReturn(note);
 
-
+        mockMvc.perform(get("/note/delete/{id}", "456"))
+                .andExpect(status().is3xxRedirection());
     }
 
 }
