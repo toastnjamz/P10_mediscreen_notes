@@ -12,7 +12,7 @@ public class PatientServiceClient {
 
     private final RestTemplate restTemplate;
 
-    private final String requestURI = "http://localhost:8081//patientsList";
+    private final String requestURI = "http://patients:8081/patientsList";
 
     public PatientServiceClient(RestTemplate restTemplate) {
         this.restTemplate = restTemplate;
